@@ -1,59 +1,108 @@
-package agroahorroapp.main;
-
-import agroahorroapp.panels.MiAlcanciaPanel;
-import agroahorroapp.panels.AnadirAhorroPanel;
-import agroahorroapp.panels.ProgresoAhorroPanel;
+package agroahorroapp.panels;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame extends JFrame {
-    private JPanel contentPanel;
-
-    public MainFrame() {
-        setTitle("AGROAHORRO - Inclusión Financiera");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(900, 600);
-        setLocationRelativeTo(null);
-
-        // Layout principal
+public class MiAlcanciaPanel extends JPanel {
+    public MiAlcanciaPanel() {
+        // Color de fondo “verde muy claro”
+        setBackground(new Color(245, 255, 245));
         setLayout(new BorderLayout());
 
-        // Panel lateral
-        JPanel sidePanel = new JPanel(new GridLayout(3, 1));
-        sidePanel.setBackground(new Color(220, 255, 220));
+        // —— 1) TÍTULO SUPERIOR —— 
+        JLabel title = new JLabel("MI ALCANCÍA DE AHORRO", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setForeground(Color.BLACK);
+        title.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        add(title, BorderLayout.NORTH);
 
-        JButton btnAlcancia = new JButton("Mi alcancía");
-        JButton btnAnadir = new JButton("Añadir ahorro");
-        JButton btnProgreso = new JButton("Progreso de tu ahorro");
+        // —— 2) PANEL CENTRAL (FORMULARIO) —— 
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(new Color(245, 255, 245));
+        formPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 200, 200), 2, true),
+                BorderFactory.createEmptyBorder(20, 40, 20, 40)
+        ));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
 
-        sidePanel.add(btnAlcancia);
-        sidePanel.add(btnAnadir);
-        sidePanel.add(btnProgreso);
-        add(sidePanel, BorderLayout.WEST);
+        // 2.1) Saludo al usuario
+        JLabel saludo = new JLabel("Hola, (nombre del usuario):");
+        saludo.setFont(new Font("Arial", Font.PLAIN, 14));
+        formPanel.add(saludo, gbc);
 
-        // Panel principal (contenido)
-        contentPanel = new JPanel(new BorderLayout());
-        add(contentPanel, BorderLayout.CENTER);
+        // 2.2) Línea indicativa
+        gbc.gridy++;
+        JLabel instruccion = new JLabel("¡Revisa el estado de tus ahorros!");
+        instruccion.setFont(new Font("Arial", Font.PLAIN, 14));
+        formPanel.add(instruccion, gbc);
 
-        // Eventos
-        btnAlcancia.addActionListener(e -> setPanel(new MiAlcanciaPanel()));
-        btnAnadir.addActionListener(e -> setPanel(new AnadirAhorroPanel()));
-        btnProgreso.addActionListener(e -> setPanel(new ProgresoAhorroPanel()));
+        // 2.3) Metas Activos
+        gbc.gridy++;
+        formPanel.add(new JLabel("Metas Activos:"), gbc);
+        gbc.gridx = 1;
+        JComboBox<String> comboMetas = new JComboBox<>(new String[]{"Meta 1", "Meta 2"});
+        comboMetas.setPreferredSize(new Dimension(150, 25));
+        formPanel.add(comboMetas, gbc);
 
-        // Mostrar primero
-        setPanel(new MiAlcanciaPanel());
-    }
+        // 2.4) Crear nueva meta
+        gbc.gridx = 0;
+        gbc.gridy++;
+        formPanel.add(new JLabel("Crear nueva meta:"), gbc);
+        gbc.gridx = 1;
+        JTextField txtNuevaMeta = new JTextField();
+        txtNuevaMeta.setPreferredSize(new Dimension(150, 25));
+        formPanel.add(txtNuevaMeta, gbc);
 
-    private void setPanel(JPanel panel) {
-        contentPanel.removeAll();
-        contentPanel.add(panel);
-        contentPanel.revalidate();
-        contentPanel.repaint();
-    }
+        // 2.5) Fecha límite
+        gbc.gridx = 0;
+        gbc.gridy++;
+        formPanel.add(new JLabel("Fecha límite:"), gbc);
+        gbc.gridx = 1;
+        JTextField txtFechaLimite = new JTextField();
+        txtFechaLimite.setPreferredSize(new Dimension(150, 25));
+        formPanel.add(txtFechaLimite, gbc);
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new MainFrame().setVisible(true));
+        // 2.6) Monto de Ahorro
+        gbc.gridx = 0;
+        gbc.gridy++;
+        formPanel.add(new JLabel("Monto de Ahorro:"), gbc);
+        gbc.gridx = 1;
+        JTextField txtMonto = new JTextField();
+        txtMonto.setPreferredSize(new Dimension(150, 25));
+        formPanel.add(txtMonto, gbc);
+
+        add(formPanel, BorderLayout.CENTER);
+
+        // —— 3) PANEL INFERIOR (BOTONES) —— 
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 20));
+        buttonsPanel.setBackground(new Color(245, 255, 245));
+
+        // Botón SALIR
+        JButton btnSalir = new JButton("SALIR");
+        btnSalir.setBackground(new Color(180, 250, 180));
+        btnSalir.setFont(new Font("Arial", Font.BOLD, 14));
+        btnSalir.setPreferredSize(new Dimension(120, 40));
+        buttonsPanel.add(btnSalir);
+
+        // Botón CONTINUAR
+        JButton btnContinuar = new JButton("CONTINUAR");
+        btnContinuar.setBackground(new Color(180, 250, 180));
+        btnContinuar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnContinuar.setPreferredSize(new Dimension(120, 40));
+        buttonsPanel.add(btnContinuar);
+
+        // Botón GUARDAR
+        JButton btnGuardar = new JButton("GUARDAR");
+        btnGuardar.setBackground(new Color(180, 250, 180));
+        btnGuardar.setFont(new Font("Arial", Font.BOLD, 14));
+        btnGuardar.setPreferredSize(new Dimension(120, 40));
+        buttonsPanel.add(btnGuardar);
+
+        add(buttonsPanel, BorderLayout.SOUTH);
     }
 }
 
